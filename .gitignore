@@ -1,0 +1,7 @@
+/.vs
+/VBSDebugger/bin
+/VBSDebugger/obj
+/ActivDbgNET/obj
+/ActivDbgNET/bin
+/*.sdf
+/VBSDebugger/*.user
