@@ -1,13 +1,9 @@
-﻿using ActivDbg;
+﻿using ActivDbgNET;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace VBSDebugger
 {
@@ -66,9 +62,9 @@ namespace VBSDebugger
          * 
          */
 
-        static DebugProcess cscriptProc;
+        static RemoteDebugApplication cscriptProc;
         static bool Connected = true;
-        static Stack<DebugApplication> breakPoints = new Stack<DebugApplication>();
+        static Stack<RemoteDebugApplicationThread> breakPoints = new Stack<RemoteDebugApplicationThread>();
 
         [STAThread]
         static void Main(string[] args)
@@ -82,7 +78,7 @@ namespace VBSDebugger
 
             Console.WriteLine("Connecting...");
             cscriptProc.ConnectDebugger(ad);
-            Console.WriteLine("Connected to " + cscriptProc.Name);
+            Console.WriteLine("Connected to " + cscriptProc.GetName());
             // TODO: make the breakpoint thing more event based;
             //       so extend ApplicationDebugger by some events and register an event which just resumes on a key press
 
@@ -92,26 +88,42 @@ namespace VBSDebugger
 
             Console.WriteLine("Waiting for BreakPoint...");
 
-            while (Connected)
+            try
             {
-                while(breakPoints.Any())
+                while (Connected)
                 {
-                    var bp = breakPoints.Pop();
-                    Console.WriteLine("Press any key to continue.");
-                    Console.ReadKey();
-                    cscriptProc.Resume(bp);
-                    Console.WriteLine("Resumed!");
-                }
+                    while (breakPoints.Any())
+                    {
+                        var bp = breakPoints.Pop();
+                        Console.WriteLine("Press any key to continue.");
+                        switch (Console.ReadKey().Key)
+                        {
+                            case ConsoleKey.I:
+                                cscriptProc.StepIn(bp);
+                                break;
+                            case ConsoleKey.O:
+                                cscriptProc.StepOver(bp);
+                                break;
+                            case ConsoleKey.P:
+                                cscriptProc.StepOut(bp);
+                                break;
+                        }
+                    }
 
-                Thread.Sleep(300);
+                    Thread.Sleep(300);
+                }
+            }
+            finally
+            {
+                ad = null;
             }
         }
 
-        public static DebugProcess ConsoleSelectDebugProcess()
+        public static RemoteDebugApplication ConsoleSelectDebugProcess()
         {
-            VBSDebugger vbsD = new VBSDebugger();
-            var processes = vbsD.GetProcesses();
-            DebugProcess proc = null;
+            MachineDebugManager mdm = new MachineDebugManager();
+            var processes = mdm.GetRemoteDebugApplications();
+            RemoteDebugApplication proc = null;
 
             while (proc == null)
             {
@@ -141,12 +153,12 @@ namespace VBSDebugger
             return proc;
         }
 
-        public static void ListProcesses(DebugProcess[] procs)
+        public static void ListProcesses(RemoteDebugApplication[] procs)
         {
             for (int i = 0; i < procs.Length; i++)
             {
                 var proc = procs[i];
-                Console.WriteLine(i + ": " + proc.Name);
+                Console.WriteLine(i + ": " + proc.GetName());
             }
         }
 
@@ -155,32 +167,43 @@ namespace VBSDebugger
             Connected = false;
         }
 
-        private static void Handle_BreakPoint(DebugApplication app, BreakReason reason, ScriptError error)
+        private static void Handle_BreakPoint(RemoteDebugApplicationThread debugAppThread, ActivDbgNET.BreakReason reason, ActiveScriptErrorDebug error)
         {
             Console.WriteLine("BreakReason: " + reason.ToString());
-            breakPoints.Push(app);
+            breakPoints.Push(debugAppThread);
+            var stackFrames = debugAppThread.GetDebugStackFrameDescriptors();
+            var stackFrame = stackFrames.First();
+            var docs = stackFrames.Select(a => a.GetStackFrame()?.GetCodeContext()?.GetDebugDocumentContext()).Where(d => d != null);
+            var errorDoc = error?.GetDocumentContext()?.GetDocument();
+            var errorPosition = error?.GetSourcePosition();
 
-            var docs = app.GetDocuments();
-            var errorDoc = error?.GetTextDocument();
-            var errorPosition = new ScriptError.DocumentPosition() { Line = 0, Character = 0 };
-            error?.GetDebugPosition();
-
-            foreach (var doc in docs)
+            foreach (var docContext in docs)
             {
-                // Attributes can be used to color the text
-                var docText = doc.GetText();
+                var textDoc = DebugDocumentText.FromDebugDocument(docContext.GetDocument());
 
-                Console.WriteLine("Title: " + doc.GetName());
+                if(textDoc == null)
+                {
+                    Console.WriteLine("Skipping " + textDoc.GetURL() + ": Not a text document!");
+                    continue;
+                }
+
+                // Attributes can be used to color the text
+                var docText = textDoc.GetText();
+
+                Console.WriteLine("Title: " + textDoc.GetTitle());
                 Console.WriteLine("CONTENT START");
                 var textLines = Regex.Split(docText.Text, "\r\n|\r|\n");
                 for (int i = 0; i < textLines.Length; i++)
                 {
                     string l = textLines[i];
-
-                    if (doc.GetName() == errorDoc?.GetName() && i == errorPosition.Line)
+                    if (textDoc.GetTitle() == errorDoc?.GetTitle() && 
+                        i == errorPosition?.Line)
                     {
                         l = "»" + l + "«";
                     }
+
+                    if (i == textDoc.GetPosition(docContext).Line)
+                        l = "#" + l + "#";
 
                     Console.WriteLine(l);
                 }

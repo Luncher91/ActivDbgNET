@@ -69,7 +69,12 @@ namespace ActivDbgNET
             return GetName(tagDOCUMENTNAMETYPE.DOCUMENTNAMETYPE_UNIQUE_TITLE);
         }
 
-        private Guid GetClassId()
+        internal IDebugDocument GetDoc()
+        {
+            return doc;
+        }
+
+        internal Guid GetClassId()
         {
             Guid classId;
             doc.GetDocumentClassId(out classId);

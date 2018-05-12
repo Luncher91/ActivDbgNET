@@ -12,6 +12,11 @@ namespace ActivDbgNET
             this.docCont = docCont;
         }
 
+        internal IDebugDocumentContext GetDebugDocumentContext()
+        {
+            return docCont;
+        }
+
         public DebugCodeContext[] GetCodeContexts()
         {
             List<DebugCodeContext> contexts = new List<DebugCodeContext>();

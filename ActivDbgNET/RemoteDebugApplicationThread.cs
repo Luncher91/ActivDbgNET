@@ -12,7 +12,7 @@ namespace ActivDbgNET
             this.prpt = prpt;
         }
 
-        private DebugStackFrameDescriptor[] GetDebugStackFrameDescriptors()
+        public DebugStackFrameDescriptor[] GetDebugStackFrameDescriptors()
         {
             List<DebugStackFrameDescriptor> frames = new List<DebugStackFrameDescriptor>();
 
@@ -32,6 +32,11 @@ namespace ActivDbgNET
             } while (fetched > 0);
 
             return frames.ToArray();
+        }
+
+        internal IRemoteDebugApplicationThread GetRemoteDebugApplicationThread()
+        {
+            return prpt;
         }
     }
 }

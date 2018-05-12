@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ActivDbgNET
 {
-    public abstract class ApplicationDebugger
+    public class ApplicationDebugger
     {
         private ApplicationDebuggerImplementation appDebugger;
 
@@ -23,7 +23,7 @@ namespace ActivDbgNET
         public delegate void DebuggerEventHandler(Guid interfaceId, object punk);
         public event DebuggerEventHandler DebugEvent;
 
-        protected ApplicationDebugger()
+        public ApplicationDebugger()
         {
             appDebugger = new ApplicationDebuggerImplementation();
             appDebugger.BreakPoint += AppDebugger_BreakPoint;

@@ -9,10 +9,11 @@ namespace ActivDbgNET
 {
     public class MachineDebugManager
     {
-        private static IMachineDebugManager machineDebugManager = GetMDM();
+        private IMachineDebugManager machineDebugManager = null;
 
         public MachineDebugManager()
         {
+            machineDebugManager = GetMDM();
         }
 
         public RemoteDebugApplication[] GetRemoteDebugApplications()

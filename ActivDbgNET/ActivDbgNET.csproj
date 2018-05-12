@@ -50,6 +50,7 @@
     <Compile Include="DebugCodeContext.cs" />
     <Compile Include="DebugDocument.cs" />
     <Compile Include="DebugDocumentContext.cs" />
+    <Compile Include="DebugDocumentText.cs" />
     <Compile Include="DebugProperty.cs" />
     <Compile Include="DebugStackFrame.cs" />
     <Compile Include="DebugStackFrameDescriptor.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteDebugApplication.cs" />
     <Compile Include="RemoteDebugApplicationThread.cs" />
+    <Compile Include="SourcePosition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
