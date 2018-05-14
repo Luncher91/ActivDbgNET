@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ActivDbgNET</RootNamespace>
     <AssemblyName>ActivDbgNET</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,10 +52,19 @@
     <Compile Include="DebugDocument.cs" />
     <Compile Include="DebugDocumentContext.cs" />
     <Compile Include="DebugDocumentText.cs" />
+    <Compile Include="DebugExpression.cs" />
+    <Compile Include="DebugExpressionContext.cs" />
+    <Compile Include="DebugHelper.cs" />
     <Compile Include="DebugProperty.cs" />
     <Compile Include="DebugStackFrame.cs" />
     <Compile Include="DebugStackFrameDescriptor.cs" />
     <Compile Include="MachineDebugManager.cs" />
+    <Compile Include="ProcessDebugManager.cs" />
+    <Compile Include="DebugApplication.cs" />
+    <Compile Include="ProcessDebugManagerPlatforms\DebugApplication32.cs" />
+    <Compile Include="ProcessDebugManagerPlatforms\DebugApplication64.cs" />
+    <Compile Include="ProcessDebugManagerPlatforms\ProcessDebugManager32.cs" />
+    <Compile Include="ProcessDebugManagerPlatforms\ProcessDebugManager64.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteDebugApplication.cs" />
     <Compile Include="RemoteDebugApplicationThread.cs" />

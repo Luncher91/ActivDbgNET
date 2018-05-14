@@ -33,6 +33,25 @@ namespace ActivDbgNET
             remoteDebugApplication.DisconnectDebugger();
         }
 
+        public DebugExpressionContext[] GetGlobalExpressionContext()
+        {
+            List<DebugExpressionContext> expresseionContexts = new List<DebugExpressionContext>();
+            IEnumDebugExpressionContexts debugExpressions;
+            remoteDebugApplication.EnumGlobalExpressionContexts(out debugExpressions);
+
+            IDebugExpressionContext debugExpressionContext;
+            uint fetched = 0;
+
+            do
+            {
+                fetched = 0;
+                debugExpressions.RemoteNext(1, out debugExpressionContext, out fetched);
+                expresseionContexts.Add(new DebugExpressionContext(debugExpressionContext));
+            } while (fetched > 0);
+
+            return expresseionContexts.ToArray();
+        }
+
         private enum ResumeAction
         {
             Continue,

@@ -69,6 +69,14 @@ namespace VBSDebugger
         [STAThread]
         static void Main(string[] args)
         {
+            var pdm = ProcessDebugManager.Create();
+            var app = pdm.GetDefaultDebugApplication();
+            Console.WriteLine(app.GetName());
+            //DebuDebugger();
+        }
+
+        private static void DebuDebugger()
+        {
             cscriptProc = ConsoleSelectDebugProcess();
 
             if (cscriptProc == null)
@@ -95,7 +103,10 @@ namespace VBSDebugger
                     while (breakPoints.Any())
                     {
                         var bp = breakPoints.Pop();
-                        Console.WriteLine("Press any key to continue.");
+                        Console.WriteLine("I: StepIn");
+                        Console.WriteLine("O: StepOver");
+                        Console.WriteLine("P: StepOut");
+                        Console.WriteLine("ENTER: Continue");
                         switch (Console.ReadKey().Key)
                         {
                             case ConsoleKey.I:
@@ -106,6 +117,9 @@ namespace VBSDebugger
                                 break;
                             case ConsoleKey.P:
                                 cscriptProc.StepOut(bp);
+                                break;
+                            case ConsoleKey.Enter:
+                                cscriptProc.Continue(bp);
                                 break;
                         }
                     }
