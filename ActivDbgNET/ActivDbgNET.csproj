@@ -31,9 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActivDbg">
-      <HintPath>..\..\..\..\..\Desktop\GIT\github\winsdk-10\Include\10.0.14393.0\um\ActivDbg.dll</HintPath>
+    <Reference Include="ActivDbg, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>lib\ActivDbg.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,6 +71,11 @@
     <Compile Include="RemoteDebugApplication.cs" />
     <Compile Include="RemoteDebugApplicationThread.cs" />
     <Compile Include="SourcePosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\ActivDbg.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
