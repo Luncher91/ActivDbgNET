@@ -41,27 +41,6 @@ namespace VBSDebugger
          * as an Administrator once, which does all the necessary things as far as possible.
          */
 
-        /* We can stop and resume on a break point
-         * we can list all loaded documents
-         * we can show the content of the documents
-         * we have an attribte for each character of the document
-         * 
-         * 
-         */
-
-        /* I would like to see the position of the next execution step
-         * I would like to see exploring objects
-         * I would like to see executing inline code
-         * I would like to single step, step over and step in, step out
-         * 
-         * I would like to know how I can add a launcher to the MDM (see: LIST AS JIT)
-         */
-
-        /* When all that is fullfilled I can start to connect this Library with an VSCode Extension!
-         * (see: VSCODE EXTENSION)
-         * 
-         */
-
         static RemoteDebugApplication cscriptProc;
         static bool Connected = true;
         static Stack<RemoteDebugApplicationThread> breakPoints = new Stack<RemoteDebugApplicationThread>();

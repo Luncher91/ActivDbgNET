@@ -56,6 +56,7 @@
     <Compile Include="DebugExpressionContext.cs" />
     <Compile Include="DebugHelper.cs" />
     <Compile Include="DebugProperty.cs" />
+    <Compile Include="DebugPropertyInfo.cs" />
     <Compile Include="DebugStackFrame.cs" />
     <Compile Include="DebugStackFrameDescriptor.cs" />
     <Compile Include="MachineDebugManager.cs" />
