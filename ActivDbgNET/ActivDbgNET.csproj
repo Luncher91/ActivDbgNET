@@ -73,7 +73,7 @@
     <Compile Include="SourcePosition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\ActivDbg.dll">
+    <Content Include="ActivDbg.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
